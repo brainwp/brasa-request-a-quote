@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1749654102"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1050468060"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1749654102" class="accordion-body collapse in">
+            <div id="namespace-1050468060" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -192,6 +192,15 @@
                                                                     <a href="../classes/Brasa_Request_A_Quote.html#method_add_quote_param_checkout_url" class="">add_quote_param_checkout_url()</a><br />
                                                                     <a href="../classes/Brasa_Request_A_Quote.html#method_change_woocommerce_strings" class="">change_woocommerce_strings()</a><br />
                                                                     <a href="../classes/Brasa_Request_A_Quote.html#method_remove_coupons_button_on_quote_cart" class="">remove_coupons_button_on_quote_cart()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_is_quote_checkout" class="">is_quote_checkout()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_remove_shipping_form" class="">remove_shipping_form()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_change_checkout_fields" class="">change_checkout_fields()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_remove_payment" class="">remove_payment()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_add_body_classes" class="">add_body_classes()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_hide_css_items" class="">hide_css_items()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_remove_price_cart" class="">remove_price_cart()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_add_checkout_hidden_field" class="">add_checkout_hidden_field()</a><br />
+                                                                    <a href="../classes/Brasa_Request_A_Quote.html#method_quote_checkout_process" class="">quote_checkout_process()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -263,12 +272,12 @@
             <a id="property_is_quote_cart" name="property_is_quote_cart" class="anchor"></a>
             <article class="property">
                 <h3 class="private ">$is_quote_cart</h3>
-                <pre class="signature">$is_quote_cart : </pre>
-                <p><em></em></p>
+                <pre class="signature">$is_quote_cart : boolean</pre>
+                <p><em>Set if quote cart template is showing</em></p>
                 
 
                                 <h4>Type</h4>
-                
+                boolean
                                             </article>
         </div>
         <aside class="span4 detailsbar">
@@ -571,7 +580,7 @@
             <article class="method">
                 <h3 class="public ">remove_coupons_button_on_quote_cart()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">remove_coupons_button_on_quote_cart(boolean  <span class="argument">$value</span>) : \bool;</pre>
+                <pre class="signature" style="margin-right: 54px;">remove_coupons_button_on_quote_cart(boolean  <span class="argument">$value</span>) : \boolean;</pre>
                 <p><em>Remove coupons area on quote cart</em></p>
                 
 
@@ -586,7 +595,317 @@
                 
                 
                                     <h4>Returns</h4>
-                    \bool;
+                    \boolean;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_is_quote_checkout" name="method_is_quote_checkout" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">is_quote_checkout()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">is_quote_checkout() : boolean</pre>
+                <p><em>Check if is quote checkout</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_shipping_form" name="method_remove_shipping_form" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_shipping_form()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_shipping_form(boolean  <span class="argument">$value</span>) : boolean</pre>
+                <p><em>Remove shipping fields on quote checkout</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_change_checkout_fields" name="method_change_checkout_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">change_checkout_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">change_checkout_fields(array  <span class="argument">$fields</span>) : array</pre>
+                <p><em>Change/Remove WooCommerce Checkout fields on quote checkout</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$fields </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_payment" name="method_remove_payment" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_payment()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_payment(boolean  <span class="argument">$value</span>) : boolean</pre>
+                <p><em>Remove payment on quote checkout</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_body_classes" name="method_add_body_classes" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_body_classes()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_body_classes(\type  <span class="argument">$classes</span>) : \type</pre>
+                <p><em>Add body class in checkout</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\type</td>
+                                <td>$classes </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \type
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hide_css_items" name="method_hide_css_items" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hide_css_items()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hide_css_items() : \type</pre>
+                <p><em>Add CSS style to hide unused WooCommerce features</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \type
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_price_cart" name="method_remove_price_cart" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_price_cart()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_price_cart(string  <span class="argument">$price</span>, array  <span class="argument">$cart_item = array()</span>, array  <span class="argument">$cart_item_key = array()</span>) : string</pre>
+                <p><em>Remove price from quote cart</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$price </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cart_item </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$cart_item_key </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_checkout_hidden_field" name="method_add_checkout_hidden_field" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_checkout_hidden_field()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_checkout_hidden_field() : boolean</pre>
+                <p><em>Add checkout field to set if is quote</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_quote_checkout_process" name="method_quote_checkout_process" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">quote_checkout_process()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">quote_checkout_process(string  <span class="argument">$order_id</span>) : boolean</pre>
+                <p><em>Save meta for show if is quote order</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$order_id </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
                                     				
                             </article>
         </div>
@@ -650,7 +969,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on January 11th, 2016 at 11:43.
+                    on January 11th, 2016 at 18:28.
                 </section>
             </section>
         </section>
