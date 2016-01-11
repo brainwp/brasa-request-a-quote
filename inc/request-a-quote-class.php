@@ -5,6 +5,7 @@
 class Brasa_Request_A_Quote {
 
 	/**
+	 * Set if quote cart template is showing
 	 * @var boolean
 	 */
 	private $is_quote_cart = false;
@@ -31,6 +32,30 @@ class Brasa_Request_A_Quote {
 
 		// Remove coupons button on quote cart
 		add_filter( 'woocommerce_coupons_enabled', array( $this, 'remove_coupons_button_on_quote_cart' ), 9999999 );
+
+		// Remove shipping form
+		add_filter( 'woocommerce_cart_needs_shipping_address', array( $this, 'remove_shipping_form' ), 9999999 );
+
+		// Change checkout fields
+		add_filter( 'woocommerce_default_address_fields', array( $this, 'change_checkout_fields' ), 999999999999999999999 );
+
+		// Change checkout fields
+		add_filter( 'woocommerce_cart_needs_payment', array( $this, 'remove_payment' ), 9999999 );
+
+		// Add body class on quote checkout
+		add_filter( 'body_class', array( $this, 'add_body_classes' ), 9999999 );
+
+		// Hide CSS items
+		add_filter( 'wp_enqueue_scripts', array( $this, 'hide_css_items' ), 9999999 );
+
+		// Remove price on quote products in cart
+		add_filter( 'woocommerce_cart_item_subtotal', array( $this, 'remove_price_cart' ), 9999999 );
+
+		// Add hidden field to quote checkout
+		add_action( 'woocommerce_after_order_notes', array( $this, 'add_checkout_hidden_field' ), 9999999 );
+
+		// Process checkout quote
+		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'quote_checkout_process' ), 9999999 );
 
 	}
 	/**
@@ -63,8 +88,22 @@ class Brasa_Request_A_Quote {
 	 * @return mixed
 	 */
 	public function filter_woocommerce_default_cart( $data, $cart_item = array(), $cart_item_key = array() ) {
-		if ( ! $this->is_quote_cart && $this->is_quote_product( $data->post->ID ) ) {
-			return false;
+		if ( is_cart() ) {
+			if ( ! $this->is_quote_cart && $this->is_quote_product( $data->post->ID ) ) {
+				return false;
+			}
+			if ( $this->is_quote_cart && ! $this->is_quote_product( $data->post->ID ) ) {
+				return false;
+			}
+		}
+		if ( is_checkout() ) {
+			if ( ! $this->is_quote_checkout() && $this->is_quote_product( $data->post->ID ) ) {
+				return false;
+			}
+			if ( $this->is_quote_checkout() && ! $this->is_quote_product( $data->post->ID ) ) {
+				return false;
+			}
+
 		}
 		return $data;
 	}
@@ -133,9 +172,24 @@ class Brasa_Request_A_Quote {
 			if ( $text == 'Update Cart' ) {
 				return __( 'Update Quote', 'brasa-request-a-quote' );
 			}
+			if ( $text == 'Total' ) {
+				return '';
+			}
+
 		}
-		if ( $text == 'Add to Cart' ) {
-			return __( 'Add to Quote', 'brasa-request-a-quote' );
+		if ( $this->is_quote_checkout() ) {
+			if ( $text == 'Billing Details' ) {
+				return __( 'Quote Details', 'brasa-request-a-quote' );
+			}
+			if ( $text == 'Order Notes' ) {
+				return __( 'Quote Notes', 'brasa-request-a-quote' );
+			}
+			if ( $text == 'Place order' ) {
+				return __( 'Place Quote', 'brasa-request-a-quote' );
+			}
+			if ( $text == 'Total' ) {
+				return '';
+			}
 		}
 		return $translated_text;
 	}
@@ -144,12 +198,119 @@ class Brasa_Request_A_Quote {
 	 * @param boolean $value
 	 * @return boolean;
 	 */
-	function remove_coupons_button_on_quote_cart ( $value ) {
-		if ( $this->is_quote_cart ) {
+	public function remove_coupons_button_on_quote_cart ( $value ) {
+		if ( $this->is_quote_cart || $this->is_quote_checkout() ) {
 			return false;
 		}
 		return $value;
 	}
+	/**
+	 * Check if is quote checkout
+	 * @return boolean
+	 */
+	public function is_quote_checkout() {
+		if ( is_checkout() && isset( $_GET[ 'brasa_request_a_quote_checkout' ] ) ) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * Remove shipping fields on quote checkout
+	 * @param boolean $value
+	 * @return boolean
+	 */
+	public function remove_shipping_form( $value ) {
+		if ( $this->is_quote_checkout() ) {
+			return false;
+		}
+		return $value;
+	}
+	/**
+	 * Change/Remove WooCommerce Checkout fields on quote checkout
+	 * @param array $fields
+	 * @return array
+	 */
+	public function change_checkout_fields( $fields ) {
+		if ( $this->is_quote_checkout() ) {
+			if ( isset( $fields[ 'postcode' ] ) ) {
+				unset( $fields[ 'postcode' ] );
+			}
+		}
+		return $fields;
+	}
+	/**
+	 * Remove payment on quote checkout
+	 * @param boolean $value
+	 * @return boolean
+	 */
+	public function remove_payment( $value ) {
+		if ( $this->is_quote_checkout() ) {
+			return false;
+		}
+		return $value;
+	}
+	/**
+	 * Add body class in checkout
+	 * @param type $classes
+	 * @return type
+	 */
+	public function add_body_classes( $classes ) {
+		if ( $this->is_quote_checkout() ) {
+			$classes[] = 'quote-checkout';
+		}
+		return $classes;
+	}
+	/**
+	 * Add CSS style to hide unused WooCommerce features
+	 * @return type
+	 */
+	public function hide_css_items() {
+		if ( $this->is_quote_checkout() ) {
+			wp_enqueue_style( 'brasa-request-a-quote-css', BRASA_REQUEST_A_QUOTE_URL . 'public/assets/css/style.css' );
+		}
+	}
+	/**
+	 * Remove price from quote cart
+	 * @param string $price
+	 * @param array $cart_item
+	 * @param array $cart_item_key
+	 * @return string
+	 */
+	public function remove_price_cart( $price, $cart_item = array(), $cart_item_key = array() ) {
+		if ( $this->is_quote_cart ) {
+			return '';
+		}
+		return $price;
+	}
+	/**
+	 * Add checkout field to set if is quote
+	 * @return boolean
+	 */
+	public function add_checkout_hidden_field() {
+		if ( $this->is_quote_checkout() ) {
+			echo '<div id="quote-checkout-hidden" style="display:none;">';
+			woocommerce_form_field( 'is_request_a_quote_order', array(
+        		'type'          => 'text',
+        		'class'         => array('request-a-quote-hidden'),
+        		'label'         => '',
+        		'placeholder'   => '',
+        		), 'true'
+			);
+			echo '</div>';
+		}
+	}
+	/**
+	 * Save meta for show if is quote order
+	 * @param string $order_id
+	 * @return boolean
+	 */
+	public function quote_checkout_process( $order_id ) {
+		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'true' ) {
+			update_post_meta( $order_id, 'is_request_a_quote_order', 'true' );
+			do_action( 'quote_checkout_process', $order_id );
+		}
+	}
 }
 global $brasa_request_quote;
 $brasa_request_quote = new Brasa_Request_A_Quote();
+

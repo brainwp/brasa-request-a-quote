@@ -23,6 +23,8 @@
  */
 // define plugin directory location
 define( 'BRASA_REQUEST_A_QUOTE_DIR', plugin_dir_path( __FILE__ ) );
+define( 'BRASA_REQUEST_A_QUOTE_URL', plugin_dir_url( __FILE__ ) );
+
 // include metabox class
 require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/metabox-class.php';
 // include metaboxes options
