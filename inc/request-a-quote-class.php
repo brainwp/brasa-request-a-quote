@@ -11,6 +11,12 @@ class Brasa_Request_A_Quote {
 	private $is_quote_cart = false;
 
 	/**
+	 * Array to save cart items
+	 * @var array
+	 */
+	private $save_cart = array();
+
+	/**
 	 * Class Constructor
 	 * @return null
 	 */
@@ -46,7 +52,7 @@ class Brasa_Request_A_Quote {
 		add_filter( 'body_class', array( $this, 'add_body_classes' ), 9999999 );
 
 		// Hide CSS items
-		add_filter( 'wp_enqueue_scripts', array( $this, 'hide_css_items' ), 9999999 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'hide_css_items' ), 9999999 );
 
 		// Remove price on quote products in cart
 		add_filter( 'woocommerce_cart_item_subtotal', array( $this, 'remove_price_cart' ), 9999999 );
@@ -56,6 +62,15 @@ class Brasa_Request_A_Quote {
 
 		// Process checkout quote
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'quote_checkout_process' ), 9999999 );
+
+		// Separate each product
+		add_action( 'woocommerce_check_cart_items', array( $this, 'check_cart_items' ), 9999999 );
+
+		// Save new cart
+		add_action( 'woocommerce_cart_emptied', array( $this, 'save_cart' ), 9999999 );
+
+		// Add new cart
+		add_action( 'get_header', array( $this, 'add_new_cart' ), 9999999999999999 );
 
 	}
 	/**
@@ -247,6 +262,9 @@ class Brasa_Request_A_Quote {
 		if ( $this->is_quote_checkout() ) {
 			return false;
 		}
+		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'true' ) {
+			return false;
+		}
 		return $value;
 	}
 	/**
@@ -288,26 +306,103 @@ class Brasa_Request_A_Quote {
 	 */
 	public function add_checkout_hidden_field() {
 		if ( $this->is_quote_checkout() ) {
-			echo '<div id="quote-checkout-hidden" style="display:none;">';
-			woocommerce_form_field( 'is_request_a_quote_order', array(
-        		'type'          => 'text',
-        		'class'         => array('request-a-quote-hidden'),
-        		'label'         => '',
-        		'placeholder'   => '',
-        		), 'true'
-			);
-			echo '</div>';
+			$value = 'true';
 		}
+		else {
+			$value = 'false';
+		}
+
+		echo '<div id="quote-checkout-hidden" style="display:none;">';
+		woocommerce_form_field( 'is_request_a_quote_order', array(
+        	'type'          => 'text',
+        	'class'         => array('request-a-quote-hidden'),
+        	'label'         => '',
+        	'placeholder'   => '',
+        	), $value
+		);
+		echo '</div>';
 	}
 	/**
 	 * Save meta for show if is quote order
 	 * @param string $order_id
 	 * @return boolean
 	 */
-	public function quote_checkout_process( $order_id ) {
+	public function quote_checkout_process( $order_id, $posted = null ) {
 		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'true' ) {
 			update_post_meta( $order_id, 'is_request_a_quote_order', 'true' );
 			do_action( 'quote_checkout_process', $order_id );
+		}
+	}
+	/**
+	 * Get item product id
+	 * @param object $post
+	 * @return int
+	 */
+	public function get_item_product_id( $post ) {
+		if ( get_post_type( $post->ID ) == 'product_variation' ) {
+			return $post->post_parent;
+		}
+		return $post->ID;
+	}
+	/**
+	 * Check cart items & remove items type if not like currente checkout
+	 * @return boolean
+	 */
+	public function check_cart_items() {
+
+		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'true' ) {
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				$post_id = $this->get_item_product_id( $values['data']->post );
+				if ( ! $this->is_quote_product( $values['data']->post->ID ) ) {
+					$this->save_cart[$cart_item_key]['cart_item_key'] = $cart_item_key;
+					$this->save_cart[$cart_item_key]['values'] = $values;
+					WC()->cart->remove_cart_item( $cart_item_key );
+				}
+			}
+		}
+		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'false' ) {
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				if (  $this->is_quote_product( $values['data']->post->ID ) ) {
+					$this->save_cart[$cart_item_key]['cart_item_key'] = $cart_item_key;
+					$this->save_cart[$cart_item_key]['values'] = $values;
+					WC()->cart->remove_cart_item( $cart_item_key );
+				}
+			}
+		}
+	}
+	/**
+	 * Save cart items in user meta field
+	 * @return boolean
+	 */
+	public function save_cart() {
+		if ( ! empty( $this->save_cart ) && isset( $_POST[ 'is_request_a_quote_order' ] ) ) {
+			if ( is_user_logged_in() ) {
+				$current_user = wp_get_current_user();
+				update_user_meta( $current_user->ID, '_quote_save_cart', $this->save_cart );
+			}
+		}
+	}
+	/**
+	 * Add new cart after checkout
+	 * @return boolean
+	 */
+	public function add_new_cart() {
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			$this->save_cart = get_user_meta( $current_user->ID, '_quote_save_cart', true );
+			if ( $this->save_cart && ! empty( $this->save_cart ) ) {
+				foreach ( $this->save_cart as $product ) {
+					$product_id = (string) $product['values']['product_id'];
+					$qty = $product['values']['quantity'];
+					$variation_id = $product['values']['variation_id'];
+					$variation = $product['values']['variation'];
+					$cart_item_data = array();
+
+					WC()->cart->add_to_cart( $product_id, $qty, $variation_id, $variation, $cart_item_data );
+				}
+				// delete field after create cart
+				delete_user_meta( $current_user->ID, '_quote_save_cart' );
+			}
 		}
 	}
 }
