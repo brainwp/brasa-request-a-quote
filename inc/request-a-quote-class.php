@@ -464,11 +464,24 @@ class Brasa_Request_A_Quote {
 			}
 		}
 	}
+	/**
+	 * Save post as virtual product
+	 * @param int $post_id
+	 * @param object|null $post_object
+	 * @param boolean|null $update
+	 * @return boolean
+	 */
 	public function save_post_product( $post_id, $post_object = null, $update = null ) {
 		if ( $_POST[ 'is_request_a_quote' ] == 'true' || ! isset( $_POST[ '_virtual' ] ) ) {
 			$_POST[ '_virtual' ] = 'on';
 		}
 	}
+	/**
+	 * Remove price on order-received
+	 * @param string $price
+	 * @param object|bool $order
+	 * @return string
+	 */
 	public function remove_total_price_order( $price, $order = false ) {
 		global $wp;
 		if ( isset( $wp->query_vars['order-received'] ) ) {
