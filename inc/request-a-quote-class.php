@@ -72,7 +72,18 @@ class Brasa_Request_A_Quote {
 		// Add new cart
 		add_action( 'get_header', array( $this, 'add_new_cart' ), 9999999999999999 );
 
+		// Change add to cart text
+		add_filter( 'woocommerce_product_single_add_to_cart_text', array( $this, 'change_add_to_cart_text' ), 9999999999999999 );
+		add_filter( 'woocommerce_product_add_to_cart_text', array( $this, 'change_add_to_cart_text' ), 9999999999999999 );
+
+		// Set quote products to virtual
+		add_action( 'save_post_product', array( $this, 'save_post_product' ), 9999999999999999 );
+
+		// Set quote products to virtual
+		add_filter( 'woocommerce_get_formatted_order_total', array( $this, 'remove_total_price_order' ), 9999999999999999 );
+
 	}
+
 	/**
 	 * Check if WooCommerce is active. If not, send a admin notice
 	 * @return null
@@ -81,6 +92,19 @@ class Brasa_Request_A_Quote {
 		if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
     		printf( '<div class="error"><p>%s</p></div>', __( '<b>Brasa Request a Quote:</b> WooCommerce is needed to activate', 'brasa-request-a-quote' ) );
 		}
+	}
+	/**
+	 * Check if is quote order
+	 * @param string $order_id
+	 * @return boolean
+	 */
+	public function is_quote_order( $order_id ) {
+		if ( $field = get_post_meta( $order_id, 'is_request_a_quote_order', true ) ) {
+			if ( $field == 'true' ) {
+				return true;
+			}
+		}
+		return false;
 	}
 	/**
 	 * Check if is quote product
@@ -95,6 +119,7 @@ class Brasa_Request_A_Quote {
 		}
 		return false;
 	}
+
 	/**
 	 * Check if cart item is quote product, if true, remove from the cart list
 	 * @param object $data
@@ -169,6 +194,18 @@ class Brasa_Request_A_Quote {
 		return $url;
 	}
 	/**
+	 * Change add to cart text in quote products
+	 * @param  string $text
+	 * @return string
+	 */
+	public function change_add_to_cart_text ( $text = null ) {
+		global $post;
+		if ( $this->is_quote_product( $post->ID ) ){
+			return apply_filters( 'add_to_quote_text', __( 'Add to Quote', 'brasa-request-a-quote' ) );
+		}
+		return $text;
+	}
+	/**
 	 * Change WooCommerce text to Quote
 	 * @param string $translated_text
 	 * @param string $text
@@ -176,6 +213,8 @@ class Brasa_Request_A_Quote {
 	 * @return string
 	 */
 	public function change_woocommerce_strings ( $translated_text = null, $text = null, $text_domain = null ) {
+		global $post, $wp;
+
 		if ( $text_domain != 'woocommerce' ) {
 			return $translated_text;
 		}
@@ -206,6 +245,19 @@ class Brasa_Request_A_Quote {
 				return '';
 			}
 		}
+
+		if ( isset ( $wp->query_vars['order-received'] ) && $this->is_quote_order( $wp->query_vars['order-received'] ) ) {
+			if ( $text == 'Total' ) {
+				return '';
+			}
+			if ( $text == 'Total:' ) {
+				return '';
+			}
+			if ( $text == 'Order Details' ) {
+				return __( 'Quote Details', 'brasa-request-a-quote' );
+			}
+		}
+
 		return $translated_text;
 	}
 	/**
@@ -283,8 +335,15 @@ class Brasa_Request_A_Quote {
 	 * @return type
 	 */
 	public function hide_css_items() {
+		global $wp;
 		if ( $this->is_quote_checkout() ) {
 			wp_enqueue_style( 'brasa-request-a-quote-css', BRASA_REQUEST_A_QUOTE_URL . 'public/assets/css/style.css' );
+			return;
+		}
+
+		if ( isset( $wp->query_vars['order-received'] ) && $this->is_quote_order( $wp->query_vars['order-received'] ) ) {
+			wp_enqueue_style( 'brasa-request-a-quote-css', BRASA_REQUEST_A_QUOTE_URL . 'public/assets/css/style.css' );
+			return;
 		}
 	}
 	/**
@@ -345,11 +404,10 @@ class Brasa_Request_A_Quote {
 		return $post->ID;
 	}
 	/**
-	 * Check cart items & remove items type if not like currente checkout
+	 * Check cart items & remove items type if not like current checkout
 	 * @return boolean
 	 */
 	public function check_cart_items() {
-
 		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'true' ) {
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
 				$post_id = $this->get_item_product_id( $values['data']->post );
@@ -402,8 +460,24 @@ class Brasa_Request_A_Quote {
 				}
 				// delete field after create cart
 				delete_user_meta( $current_user->ID, '_quote_save_cart' );
+
 			}
 		}
+	}
+	public function save_post_product( $post_id, $post_object = null, $update = null ) {
+		if ( $_POST[ 'is_request_a_quote' ] == 'true' || ! isset( $_POST[ '_virtual' ] ) ) {
+			$_POST[ '_virtual' ] = 'on';
+		}
+	}
+	public function remove_total_price_order( $price, $order = false ) {
+		global $wp;
+		if ( isset( $wp->query_vars['order-received'] ) ) {
+			$order = $wp->query_vars['order-received'];
+		}
+		if ( $this->is_quote_order( $order ) ) {
+			return '';
+		}
+		return $price;
 	}
 }
 global $brasa_request_quote;
