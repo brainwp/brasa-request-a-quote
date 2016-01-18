@@ -29,10 +29,8 @@ class Brasa_Request_A_Quote_Emails {
 		if ( $template_name == 'emails/admin-new-order.php' ) {
 
 			if ( isset( $_POST['is_request_a_quote_order'] ) && $_POST['is_request_a_quote_order'] == 'true' ) {
-			 	echo 'cheguei';
 			 	$this->is_quote_email = true;
 			}
-			echo 'até';
 		}
 	}
 	/**
