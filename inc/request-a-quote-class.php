@@ -472,6 +472,10 @@ class Brasa_Request_A_Quote {
 	 * @return boolean
 	 */
 	public function save_post_product( $post_id, $post_object = null, $update = null ) {
+		if( ! isset( $_POST[ 'is_request_a_quote' ] ) ) {
+			return;
+		}
+
 		if ( $_POST[ 'is_request_a_quote' ] == 'true' || ! isset( $_POST[ '_virtual' ] ) ) {
 			$_POST[ '_virtual' ] = 'on';
 		}
