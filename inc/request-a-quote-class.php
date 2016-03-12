@@ -30,6 +30,9 @@ class Brasa_Request_A_Quote {
 		// Add Quote cart
 		add_action( 'woocommerce_after_cart', array( $this, 'add_quote_cart' ) );
 
+		// Remove default cart
+		add_action( 'woocommerce_before_cart', array( $this, 'remove_default_cart' ) );
+
 		// Add get param to checkout URL
 		add_filter( 'woocommerce_get_checkout_url', array( $this, 'add_quote_param_checkout_url' ), 9999999 );
 
@@ -166,10 +169,32 @@ class Brasa_Request_A_Quote {
 		return false;
 	}
 	/**
+	 * Check if has quote product on cart
+	 * @return boolean
+	 */
+	public function has_default_product_on_cart () {
+		global $woocommerce;
+		if ( $woocommerce->cart->is_empty() ) {
+			return false;
+		}
+		$items = $woocommerce->cart->get_cart();
+		foreach( $items as $item => $values ) {
+			if ( ! $this->is_quote_product( $values['data']->post->ID ) ) {
+				return true;
+				break;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Add quote cart on cart page
 	 * @return null
 	 */
 	public function add_quote_cart() {
+		if ( ! $this->has_default_product_on_cart() && ! $this->is_quote_cart ) {
+			ob_end_clean();
+		}
 		if ( ! $this->is_quote_cart && $this->has_quote_product_on_cart() ) {
 			$this->is_quote_cart = true;
 			printf( apply_filters( 'brasa_request_a_quote_cart_title_html', '<h3 class="title">%s</h1>' ), __( 'Request a Quote', 'brasa-request-a-quote' ) );
@@ -460,7 +485,6 @@ class Brasa_Request_A_Quote {
 				}
 				// delete field after create cart
 				delete_user_meta( $current_user->ID, '_quote_save_cart' );
-
 			}
 		}
 	}
@@ -495,6 +519,16 @@ class Brasa_Request_A_Quote {
 			return '';
 		}
 		return $price;
+	}
+	/**
+	 * Remove default cart if is empty
+	 * @return null;
+	 */
+	public function remove_default_cart() {
+		if ( $this->has_default_product_on_cart() || $this->is_quote_cart ) {
+			return;
+		}
+		ob_start();
 	}
 }
 global $brasa_request_quote;
