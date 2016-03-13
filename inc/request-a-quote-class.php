@@ -197,7 +197,7 @@ class Brasa_Request_A_Quote {
 		}
 		if ( ! $this->is_quote_cart && $this->has_quote_product_on_cart() ) {
 			$this->is_quote_cart = true;
-			printf( apply_filters( 'brasa_request_a_quote_cart_title_html', '<h3 class="title">%s</h1>' ), __( 'Request a Quote', 'brasa-request-a-quote' ) );
+			printf( apply_filters( 'brasa_request_a_quote_cart_title_html', '<h3 class="title request-a-quote-title">%s</h1>' ), __( 'Request a Quote', 'brasa-request-a-quote' ) );
 
 			// Remove woocommerce checkout options
 			remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cart_totals', 10 );
