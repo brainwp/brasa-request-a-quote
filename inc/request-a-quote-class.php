@@ -40,7 +40,7 @@ class Brasa_Request_A_Quote {
 		add_filter( 'gettext', array( $this, 'change_woocommerce_strings' ), 20, 3 );
 
 		// Remove coupons button on quote cart
-		add_filter( 'woocommerce_coupons_enabled', array( $this, 'remove_coupons_button_on_quote_cart' ), 9999999 );
+		//add_filter( 'woocommerce_coupons_enabled', array( $this, 'remove_coupons_button_on_quote_cart' ), 9999999 );
 
 		// Remove shipping form
 		add_filter( 'woocommerce_cart_needs_shipping_address', array( $this, 'remove_shipping_form' ), 9999999 );
@@ -268,6 +268,9 @@ class Brasa_Request_A_Quote {
 			}
 			if ( $text == 'Total' ) {
 				return '';
+			}
+			if ( $text == 'Your order' ) {
+				return __( 'Your Quote', 'brasa-request-a-quote' );
 			}
 		}
 
