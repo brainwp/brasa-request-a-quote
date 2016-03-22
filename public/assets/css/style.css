@@ -9,5 +9,8 @@ body.quote-checkout #payment {
 	display: none;
 }
 .request-a-quote-title {
-	clear:both;
+	float:left;
+	display: inline-block;
+	width: auto !important;
+	clear: left;
 }

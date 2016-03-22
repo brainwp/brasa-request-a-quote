@@ -373,7 +373,7 @@ class Brasa_Request_A_Quote {
 	 */
 	public function hide_css_items() {
 		global $wp;
-		if ( $this->is_quote_checkout() ) {
+		if ( $this->is_quote_checkout() || is_cart() ) {
 			wp_enqueue_style( 'brasa-request-a-quote-css', BRASA_REQUEST_A_QUOTE_URL . 'public/assets/css/style.css' );
 			return;
 		}
