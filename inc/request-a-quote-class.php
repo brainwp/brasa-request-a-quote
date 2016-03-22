@@ -30,6 +30,10 @@ class Brasa_Request_A_Quote {
 		// Add Quote cart
 		add_action( 'woocommerce_after_cart', array( $this, 'add_quote_cart' ) );
 
+		// Add Quote colaterals
+		add_action( 'woocommerce_cart_collaterals', array( $this, 'add_quote_informations' ) );
+
+
 		// Remove default cart
 		add_action( 'woocommerce_before_cart', array( $this, 'remove_default_cart' ) );
 
@@ -205,6 +209,11 @@ class Brasa_Request_A_Quote {
 
 			wc_get_template( 'cart/cart.php' );
 			$this->is_quote_cart = false;
+		}
+	}
+	public function add_quote_informations() {
+		if ( ! $this->has_default_product_on_cart() && $this->is_quote_cart ) {
+			wc_get_template( 'cart/cart-totals.php' );
 		}
 	}
 	/**
