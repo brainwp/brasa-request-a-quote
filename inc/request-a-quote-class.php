@@ -11,6 +11,12 @@ class Brasa_Request_A_Quote {
 	private $is_quote_cart = false;
 
 	/**
+	 * Prefix to use in save options
+	 * @var string
+	 */
+	private $cart_prefix = '_cart';
+
+	/**
 	 * Array to save cart items
 	 * @var array
 	 */
@@ -50,7 +56,7 @@ class Brasa_Request_A_Quote {
 		add_filter( 'woocommerce_cart_needs_shipping_address', array( $this, 'remove_shipping_form' ), 9999999 );
 
 		// Change checkout fields
-		add_filter( 'woocommerce_default_address_fields', array( $this, 'change_checkout_fields' ), 999999999999999999999 );
+		//add_filter( 'woocommerce_default_address_fields', array( $this, 'change_checkout_fields' ), 999999999999999999999 );
 
 		// Change checkout fields
 		add_filter( 'woocommerce_cart_needs_payment', array( $this, 'remove_payment' ), 9999999 );
@@ -466,25 +472,31 @@ class Brasa_Request_A_Quote {
 		}
 	}
 	/**
-	 * Save cart items in user meta field
+	 * Save cart items in option field
 	 * @return boolean
 	 */
 	public function save_cart() {
 		if ( ! empty( $this->save_cart ) && isset( $_POST[ 'is_request_a_quote_order' ] ) ) {
-			if ( is_user_logged_in() ) {
-				$current_user = wp_get_current_user();
-				update_user_meta( $current_user->ID, '_quote_save_cart', $this->save_cart );
+			if ( $key = $this->get_woocommerce_session_key() ) {
+				$key = $key . $this->cart_prefix;
+				update_option( $key, $this->save_cart );
 			}
 		}
 	}
+
 	/**
 	 * Add new cart after checkout
 	 * @return boolean
 	 */
 	public function add_new_cart() {
-		if ( is_user_logged_in() ) {
-			$current_user = wp_get_current_user();
-			$this->save_cart = get_user_meta( $current_user->ID, '_quote_save_cart', true );
+		$key = $this->get_woocommerce_session_key();
+		if ( ! $key ) {
+			return;
+		}
+		$option_name = $key . $this->cart_prefix;
+
+		if ( $cart = get_option( $option_name, false ) ) {
+			$this->save_cart = $cart;
 			if ( $this->save_cart && ! empty( $this->save_cart ) ) {
 				foreach ( $this->save_cart as $product ) {
 					$product_id = (string) $product['values']['product_id'];
@@ -496,7 +508,7 @@ class Brasa_Request_A_Quote {
 					WC()->cart->add_to_cart( $product_id, $qty, $variation_id, $variation, $cart_item_data );
 				}
 				// delete field after create cart
-				delete_user_meta( $current_user->ID, '_quote_save_cart' );
+				delete_option( $option_name );
 			}
 		}
 	}
@@ -541,6 +553,25 @@ class Brasa_Request_A_Quote {
 			return;
 		}
 		ob_start();
+	}
+	/**
+	 * Get WooCommerce session key on cookie
+	 * @return boolean|string
+	 */
+	public function get_woocommerce_session_key() {
+		if ( ! isset( $_COOKIE ) || ! is_array( $_COOKIE ) || empty( $_COOKIE ) ) {
+			return false;
+		}
+		$session_key = false;
+
+		foreach ( $_COOKIE as $key => $value) {
+			$pos = strpos( $key, 'wp_woocommerce_session_' );
+			if ( $pos !== false ) {
+				$session_key = $key;
+			}
+		}
+
+		return $session_key;
 	}
 }
 global $brasa_request_quote;
