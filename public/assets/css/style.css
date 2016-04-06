@@ -2,15 +2,3 @@
 body.quote-checkout #payment {
 	background: none !important;
 }
-.shop_table.order_details tfoot {
-	display: none !important;
-}
-.shop_table.order_details .amount {
-	display: none;
-}
-.request-a-quote-title {
-	float:left;
-	display: inline-block;
-	width: auto !important;
-	clear: left;
-}
