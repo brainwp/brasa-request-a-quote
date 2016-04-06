@@ -607,9 +607,17 @@ class Brasa_Request_A_Quote {
 	}
 	public function woocommerce_cart_loaded_from_session( $cart = false ) {
 		global $wp_actions;
+		if ( ! get_queried_object_id() ) {
+			unset( $wp_actions[ 'woocommerce_cart_loaded_from_session' ] );
+		}
+
 
 		if ( isset( $_GET[ 'brasa_request_a_quote_checkout' ] ) ) {
 			$this->save_cart_items( 'quote' );
+			return;
+		}
+		if ( is_checkout() ) {
+			$this->save_cart_items( 'default' );
 		}
 	}
 }
