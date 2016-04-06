@@ -81,6 +81,7 @@ class Brasa_Request_A_Quote {
 
 		// Save new cart
 		add_action( 'woocommerce_cart_emptied', array( $this, 'save_cart' ), 9999999 );
+		add_action( 'wp', array( $this, 'save_cart' ), 9999999 );
 
 		// Add new cart
 		add_action( 'get_header', array( $this, 'add_new_cart' ), 9999999999999999 );
@@ -94,6 +95,12 @@ class Brasa_Request_A_Quote {
 
 		// Set quote products to virtual
 		add_filter( 'woocommerce_get_formatted_order_total', array( $this, 'remove_total_price_order' ), 9999999999999999 );
+
+		// Set quote products to virtual
+		//add_filter( 'woocommerce_get_cart_item_from_session', array( $this, 'adjust_price_by_type' ), 9999999999999999 );
+
+		// Add new cart
+		add_action( 'woocommerce_cart_loaded_from_session', array( $this, 'woocommerce_cart_loaded_from_session' ), 9999999999999999 );
 
 	}
 
@@ -463,7 +470,7 @@ class Brasa_Request_A_Quote {
 		}
 		if ( isset( $_POST[ 'is_request_a_quote_order' ] ) && $_POST[ 'is_request_a_quote_order' ] == 'false' ) {
 			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
-				if (  $this->is_quote_product( $values['data']->post->ID ) ) {
+				if ( $this->is_quote_product( $values['data']->post->ID ) ) {
 					$this->save_cart[$cart_item_key]['cart_item_key'] = $cart_item_key;
 					$this->save_cart[$cart_item_key]['values'] = $values;
 					WC()->cart->remove_cart_item( $cart_item_key );
@@ -476,12 +483,37 @@ class Brasa_Request_A_Quote {
 	 * @return boolean
 	 */
 	public function save_cart() {
-		if ( ! empty( $this->save_cart ) && isset( $_POST[ 'is_request_a_quote_order' ] ) ) {
+		if ( ! empty( $this->save_cart ) ) {
 			if ( $key = $this->get_woocommerce_session_key() ) {
 				$key = $key . $this->cart_prefix;
 				update_option( $key, $this->save_cart );
 			}
 		}
+	}
+	/**
+	 * Save cart on a variable
+	 * @param string $type
+	 * @return boolean
+	 */
+	private function save_cart_items( $type ) {
+		foreach( WC()->cart->get_cart() as $cart_item_key => $values ){
+			$post_id = $this->get_item_product_id( $values['data']->post );
+
+			if ( $type == 'default' ) {
+				if ( $this->is_quote_product( $post_id ) ) {
+					$this->save_cart[$cart_item_key]['cart_item_key'] = $cart_item_key;
+					$this->save_cart[$cart_item_key]['values'] = $values;
+					WC()->cart->remove_cart_item( $cart_item_key );
+				}
+			} else {
+				if ( ! $this->is_quote_product( $post_id ) ) {
+					$this->save_cart[$cart_item_key]['cart_item_key'] = $cart_item_key;
+					$this->save_cart[$cart_item_key]['values'] = $values;
+					WC()->cart->remove_cart_item( $cart_item_key );
+				}
+			}
+		}
+		$this->save_cart();
 	}
 
 	/**
@@ -572,6 +604,13 @@ class Brasa_Request_A_Quote {
 		}
 
 		return $session_key;
+	}
+	public function woocommerce_cart_loaded_from_session( $cart = false ) {
+		global $wp_actions;
+
+		if ( isset( $_GET[ 'brasa_request_a_quote_checkout' ] ) ) {
+			$this->save_cart_items( 'quote' );
+		}
 	}
 }
 global $brasa_request_quote;
