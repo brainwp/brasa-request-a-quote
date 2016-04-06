@@ -238,7 +238,7 @@ class Brasa_Request_A_Quote {
 		if ( $this->is_quote_cart ) {
 			return $url . '?brasa_request_a_quote_checkout=true';
 		}
-		return $url;
+		return $url . '?is_checkout';
 	}
 	/**
 	 * Change add to cart text in quote products
@@ -608,7 +608,7 @@ class Brasa_Request_A_Quote {
 	public function woocommerce_cart_loaded_from_session( $cart = false ) {
 		global $wp_actions;
 		if ( ! get_queried_object_id() ) {
-			unset( $wp_actions[ 'woocommerce_cart_loaded_from_session' ] );
+			//unset( $wp_actions[ 'woocommerce_cart_loaded_from_session' ] );
 		}
 
 
@@ -616,10 +616,11 @@ class Brasa_Request_A_Quote {
 			$this->save_cart_items( 'quote' );
 			return;
 		}
-		if ( is_checkout() ) {
+		if ( isset( $_GET[ 'is_checkout' ] ) ) {
 			$this->save_cart_items( 'default' );
 		}
 	}
+
 }
 global $brasa_request_quote;
 $brasa_request_quote = new Brasa_Request_A_Quote();
