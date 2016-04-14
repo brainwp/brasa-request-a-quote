@@ -37,7 +37,7 @@ class Brasa_Request_A_Quote {
 		add_action( 'woocommerce_after_cart', array( $this, 'add_quote_cart' ) );
 
 		// Add Quote colaterals
-		add_action( 'woocommerce_cart_collaterals', array( $this, 'add_quote_informations' ) );
+		//add_action( 'woocommerce_cart_collaterals', array( $this, 'add_quote_informations' ) );
 
 
 		// Remove default cart
@@ -212,21 +212,26 @@ class Brasa_Request_A_Quote {
 		if ( ! $this->has_default_product_on_cart() && ! $this->is_quote_cart ) {
 			ob_end_clean();
 		}
+
 		if ( ! $this->is_quote_cart && $this->has_quote_product_on_cart() ) {
 			$this->is_quote_cart = true;
-			printf( apply_filters( 'brasa_request_a_quote_cart_title_html', '<h3 class="title request-a-quote-title">%s</h1>' ), __( 'Request a Quote', 'brasa-request-a-quote' ) );
+			$this->add_quote_informations();
 
 			// Remove woocommerce checkout options
 			remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cart_totals', 10 );
 			remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
-
+			echo apply_filters( 'brasa_request_a_quote_cart_div_open', '<div class="brasa-request-a-quote-cart">' );
+			printf( apply_filters( 'brasa_request_a_quote_cart_title_html', '<h3 class="title request-a-quote-title">%s</h1>' ), __( 'Request a Quote', 'brasa-request-a-quote' ) );
 			wc_get_template( 'cart/cart.php' );
+			echo apply_filters( 'brasa_request_a_quote_cart_div_close', '</div><!-- .brasa-request-a-quote-cart -->' );
 			$this->is_quote_cart = false;
 		}
 	}
 	public function add_quote_informations() {
 		if ( ! $this->has_default_product_on_cart() && $this->is_quote_cart ) {
+			echo '<div class="cart-collaterals itsme">';
 			wc_get_template( 'cart/cart-totals.php' );
+			echo  '</div>';
 		}
 	}
 	/**
