@@ -68,7 +68,7 @@ class Brasa_Request_A_Quote {
 		add_action( 'wp_enqueue_scripts', array( $this, 'hide_css_items' ), 9999999 );
 
 		// Remove price on quote products in cart
-		add_filter( 'woocommerce_cart_item_subtotal', array( $this, 'remove_price_cart' ), 9999999 );
+		//add_filter( 'woocommerce_cart_item_subtotal', array( $this, 'remove_price_cart' ), 9999999 );
 
 		// Add hidden field to quote checkout
 		add_action( 'woocommerce_after_order_notes', array( $this, 'add_checkout_hidden_field' ), 9999999 );
