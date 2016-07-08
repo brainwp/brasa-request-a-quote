@@ -229,7 +229,7 @@ class Brasa_Request_A_Quote {
 	}
 	public function add_quote_informations() {
 		if ( ! $this->has_default_product_on_cart() && $this->is_quote_cart ) {
-			echo '<div class="cart-collaterals itsme">';
+			echo '<div class="cart-collaterals">';
 			wc_get_template( 'cart/cart-totals.php' );
 			echo  '</div>';
 		}

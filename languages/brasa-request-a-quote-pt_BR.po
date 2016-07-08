@@ -1,0 +1,115 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Brasa Request a Quote\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: Fri Jul 08 2016 09:20:17 GMT-0300 (BRT)\n"
+"PO-Revision-Date: Fri Jul 08 2016 09:35:32 GMT-0300 (BRT)\n"
+"Last-Translator: matheus <matheus@agpagencia.com.br>\n"
+"Language-Team: \n"
+"Language: Portuguese (Brazil)\n"
+"Plural-Forms: nplurals=2; plural=n != 1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Loco-Target-Locale: pt_BR\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#. Name of the plugin
+msgid "Brasa Request a Quote"
+msgstr "Brasa Request a Quote"
+
+#. URI of the plugin
+msgid "http://brasa.art.br"
+msgstr "http://brasa.art.br"
+
+#. Description of the plugin
+msgid "Another Request a Quote WooCommerce plugin"
+msgstr "Outro plugin de orçamentos para WooCommerce"
+
+#. Author of the plugin
+msgid "Brasa Design"
+msgstr "Brasa Design"
+
+#: inc/metabox-options.php:17
+msgid "Product for quotation only"
+msgstr "Produto somente para orçamentos"
+
+#: inc/metabox-options.php:22
+msgid "Yes"
+msgstr "Sim"
+
+#: inc/metabox-options.php:23
+msgid "No"
+msgstr "Não"
+
+#: inc/request-a-quote-emails-class.php:54
+msgid "You have received new quote: "
+msgstr "Você recebeu um novo orçamento:"
+
+#: inc/request-a-quote-class.php:113
+msgid "<b>Brasa Request a Quote:</b> WooCommerce is needed to activate"
+msgstr "<b>Brasa Request a Quote:</b> O WooCommerce é necessário para ativar"
+
+#: inc/request-a-quote-class.php:224 /inc/request-a-quote-class.php:276
+msgid "Request a Quote"
+msgstr "Pedido de orçamento"
+
+#: inc/request-a-quote-class.php:256
+msgid "Add to Quote"
+msgstr "Adicionar ao orçamento"
+
+#: inc/request-a-quote-class.php:279
+msgid "Update Quote"
+msgstr "Atualizar orçamento"
+
+#: inc/request-a-quote-class.php:288 /inc/request-a-quote-class.php:312
+msgid "Quote Details"
+msgstr "Detalhes do orçamento"
+
+#: inc/request-a-quote-class.php:291
+msgid "Quote Notes"
+msgstr "Notas do orçamento"
+
+#: inc/request-a-quote-class.php:294
+msgid "Place Quote"
+msgstr "Enviar pedido de orçamento"
+
+#: inc/request-a-quote-class.php:300
+msgid "Your Quote"
+msgstr "Seu orçamento"
+
+#: inc/metabox-class.php:98 /inc/metabox-class.php:555
+msgid "Add images in gallery"
+msgstr "Adicionar imagens na galeria"
+
+#: inc/metabox-class.php:99
+msgid "Add in gallery"
+msgstr "Adicionar na galeria"
+
+#: inc/metabox-class.php:100 /inc/metabox-class.php:516 /inc/metabox-class.php:544
+msgid "Remove image"
+msgstr "Remover imagem"
+
+#: inc/metabox-class.php:101
+msgid "Choose a file"
+msgstr "Escolher arquivo"
+
+#: inc/metabox-class.php:102
+msgid "Add file"
+msgstr "Adicionar arquivo"
+
+#: inc/metabox-class.php:493
+msgid "Select file"
+msgstr "Selecionar arquivo"
+
+#: inc/metabox-class.php:516
+msgid "Select image"
+msgstr "Selecionar imagem"
