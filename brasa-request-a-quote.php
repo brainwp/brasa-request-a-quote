@@ -28,8 +28,11 @@ define( 'BRASA_REQUEST_A_QUOTE_URL', plugin_dir_url( __FILE__ ) );
 /**
  * Register text domain
  */
-load_plugin_textdomain( 'brasa-request-a-quote', false, BRASA_REQUEST_A_QUOTE_DIR . '/languages/' );
 
+function brasa_request_a_quote_textdomain() {
+	load_plugin_textdomain( 'brasa-request-a-quote', false, BRASA_REQUEST_A_QUOTE_DIR . '/languages/' );
+}
+add_action( 'plugins_loaded', 'brasa_request_a_quote_textdomain' );
 
 // include metabox class
 require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/metabox-class.php';
