@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Brasa Request a Quote\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: Fri Jul 08 2016 10:29:43 GMT-0300 (BRT)\n"
-"POT-Revision-Date: Fri Jul 08 2016 10:29:56 GMT-0300 (BRT)\n"
+"POT-Revision-Date: Fri Jul 08 2016 10:47:57 GMT-0300 (BRT)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -60,12 +60,16 @@ msgstr ""
 msgid "<b>Brasa Request a Quote:</b> WooCommerce is needed to activate"
 msgstr ""
 
-#: ../inc/request-a-quote-class.php:224 ../inc/request-a-quote-class.php:280
+#: ../inc/request-a-quote-class.php:224
 msgid "Request a Quote"
 msgstr ""
 
 #: ../inc/request-a-quote-class.php:256
 msgid "Add to Quote"
+msgstr ""
+
+#: ../inc/request-a-quote-class.php:280
+msgid "Send Request a Quote"
 msgstr ""
 
 #: ../inc/request-a-quote-class.php:283
