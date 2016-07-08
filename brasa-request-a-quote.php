@@ -25,6 +25,12 @@
 define( 'BRASA_REQUEST_A_QUOTE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BRASA_REQUEST_A_QUOTE_URL', plugin_dir_url( __FILE__ ) );
 
+/**
+ * Register text domain
+ */
+load_plugin_textdomain( 'brasa-request-a-quote', false, BRASA_REQUEST_A_QUOTE_DIR . '/languages/' );
+
+
 // include metabox class
 require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/metabox-class.php';
 // include metaboxes options
