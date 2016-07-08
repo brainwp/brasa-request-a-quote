@@ -277,7 +277,7 @@ class Brasa_Request_A_Quote {
 
 		if ( $this->is_quote_cart ) {
 			if ( $text == 'Proceed to Checkout' ) {
-				return __( 'Request a Quote', 'brasa-request-a-quote' );
+				return __( 'Send Request a Quote', 'brasa-request-a-quote' );
 			}
 			if ( $text == 'Update Cart' ) {
 				return __( 'Update Quote', 'brasa-request-a-quote' );
