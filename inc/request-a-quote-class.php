@@ -270,6 +270,7 @@ class Brasa_Request_A_Quote {
 		if ( $text_domain != 'woocommerce' ) {
 			return $translated_text;
 		}
+		load_plugin_textdomain( 'brasa-request-a-quote', false, BRASA_REQUEST_A_QUOTE_DIR . '/languages/' );
 
 		if ( $this->is_quote_cart ) {
 			if ( $text == 'Proceed to Checkout' ) {
