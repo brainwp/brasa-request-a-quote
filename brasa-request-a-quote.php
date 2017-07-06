@@ -42,6 +42,11 @@ require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/metabox-class.php';
 require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/metabox-options.php';
 
 
+// include settings api class
+require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/settings-class.php';
+// include settings api options
+require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/settings-options.php';
+
 // include Request a Quote Class
 require_once BRASA_REQUEST_A_QUOTE_DIR . 'inc/request-a-quote-class.php';
 // include Request a Quote Email Class
